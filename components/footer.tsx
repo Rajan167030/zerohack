@@ -67,9 +67,9 @@ export default function FooterSection() {
                     <Image
                         src="/stackfolk.jpg"
                         alt="Stackfolk"
-                        width={200}
-                        height={64}
-                        className="h-14 w-auto rounded-sm object-contain"
+                        width={260}
+                        height={80}
+                        className="h-18 md:h-20 w-auto rounded-md object-contain scale-110"
                     />
                 </Link>
 

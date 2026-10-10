@@ -49,6 +49,9 @@ interface MobileNavMenuProps {
   onClose: () => void;
 }
 
+export const NavbarContext = React.createContext<{ visible: boolean }>({ visible: false });
+export const useNavbar = () => React.useContext(NavbarContext);
+
 export const Navbar = ({ children, className }: NavbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({
@@ -58,7 +61,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 100) {
+    if (latest > 50) {
       setVisible(true);
     } else {
       setVisible(false);
@@ -66,19 +69,21 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   });
 
   return (
-    <motion.div
-      ref={ref}
-      className={cn("fixed inset-x-0 top-4 z-40 w-full", className)}
-    >
-      {React.Children.map(children, (child) =>
-        React.isValidElement(child)
-          ? React.cloneElement(
-              child as React.ReactElement<{ visible?: boolean }>,
-              { visible },
-            )
-          : child,
-      )}
-    </motion.div>
+    <NavbarContext.Provider value={{ visible }}>
+      <motion.div
+        ref={ref}
+        className={cn("fixed inset-x-0 top-4 z-40 w-full", className)}
+      >
+        {React.Children.map(children, (child) =>
+          React.isValidElement(child)
+            ? React.cloneElement(
+                child as React.ReactElement<{ visible?: boolean }>,
+                { visible },
+              )
+            : child,
+        )}
+      </motion.div>
+    </NavbarContext.Provider>
   );
 };
 
@@ -230,6 +235,7 @@ export const MobileNavToggle = ({
 };
 
 export const NavbarLogo = () => {
+  const { visible } = useNavbar();
   return (
     <a
       href="#"
@@ -238,9 +244,12 @@ export const NavbarLogo = () => {
       <img
         src="/stackfolk.jpg"
         alt="Stackfolk"
-        width={30}
-        height={30}
-        className="h-8 w-auto rounded-sm object-contain"
+        width={48}
+        height={48}
+        className={cn(
+          "w-auto rounded-md object-contain transition-all duration-300",
+          visible ? "h-7 scale-95" : "h-11 scale-110"
+        )}
       />
       <span className="font-medium text-black dark:text-white">Stackfolk</span>
     </a>

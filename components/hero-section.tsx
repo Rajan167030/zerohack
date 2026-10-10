@@ -16,7 +16,7 @@ const poweredBy = [
     {
         name: "Stackfolk",
         logo: "/stackfolk.jpg",
-        logoClass: "h-10 w-auto rounded-sm",
+        logoClass: "h-12 w-auto rounded-md object-contain scale-105",
     },
     {
         name: "ZeroCarbon",

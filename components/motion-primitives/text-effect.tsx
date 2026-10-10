@@ -17,7 +17,7 @@ export type PresetType = 'blur' | 'fade-in-blur' | 'scale' | 'fade' | 'slide';
 export type PerType = 'word' | 'char' | 'line';
 
 export type TextEffectProps = {
-    children: string;
+    children: string | React.ReactNode;
     per?: PerType;
     as?: keyof React.JSX.IntrinsicElements;
     variants?: {
@@ -166,9 +166,10 @@ const AnimationComponent: React.FC<{
 
 AnimationComponent.displayName = 'AnimationComponent';
 
-const splitText = (text: string, per: PerType) => {
-    if (per === 'line') return text.split('\n');
-    return text.split(/(\s+)/);
+const splitText = (text: string | React.ReactNode, per: PerType) => {
+    const str = typeof text === 'string' ? text : React.Children.toArray(text).join('');
+    if (per === 'line') return str.split('\n');
+    return str.split(/(\s+)/);
 };
 
 const hasTransition = (
